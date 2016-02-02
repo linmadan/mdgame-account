@@ -5,13 +5,19 @@ var appError = require('../../lib/application/appError');
 describe('AAccount use case test', function () {
     var aAccount = null;
     before( function () {
-        aAccount = account.createAAccount();
+        aAccount = account;
     });
     context('register user #registerUser(userData,cb)', function () {
         it('anonymous user can register', function (done) {
-            aAccount.registerUser({userID: "anonymousUser-1"}, function (err, userData) {
+            var userData = {};
+            userData.userID = "anonymousUser-1";
+            userData.userName = "anonymousUser-1";
+            userData.userIconImage = "icon-image-url";
+            aAccount.registerUser(userData, function (err, userData) {
                 userData.should.be.ok();
                 userData.userID.should.be.eql("anonymousUser-1");
+                userData.userName.should.be.eql("anonymousUser-1");
+                userData.userIconImage.should.be.eql("icon-image-url");
                 userData.accountType.should.be.eql("anonymous");
                 done();
             });
@@ -24,7 +30,8 @@ describe('AAccount use case test', function () {
             aAccount.getUserData(userID, accountType, function (err, userData) {
                 userData.should.be.ok();
                 userData.userID.should.be.eql("anonymousUser-1");
-                userData.name.should.be.eql("anonymousUser-1");
+                userData.userName.should.be.eql("anonymousUser-1");
+                userData.userIconImage.should.be.eql("icon-image-url");
                 userData.accountType.should.be.eql("anonymous");
                 done();
             });
